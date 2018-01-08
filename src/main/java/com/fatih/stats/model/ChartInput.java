@@ -5,12 +5,16 @@ import java.util.Arrays;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fatih.stats.validation.ArrayEnumValidator;
+import com.fatih.stats.validation.Measures;
+
 public class ChartInput {
 
 	@NotNull(message = "dimensions.null.error")
 	@Size(min = 1, max = 1, message = "dimensions.length.error")
 	private String[] dimensions;
 	
+	@ArrayEnumValidator(enumClazz = Measures.class,message="measures.values.error")
 	@NotNull(message = "measures.null.error")
 	@Size(min = 1, max = 3, message = "measures.length.error")
 	private String[] measures;

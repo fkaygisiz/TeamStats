@@ -1,24 +1,25 @@
 package com.fatih.stats.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fatih.stats.model.Chart;
 import com.fatih.stats.model.ChartInput;
+import com.fatih.stats.service.ChartService;
 
 @RestController
 public class ChartController {
+	
+	@Autowired
+	private ChartService chartService;
 
 	@RequestMapping(name = "/chart")
-	public ChartInput getChart(@Validated @RequestBody ChartInput chartInput) {
-		System.out.println(chartInput);
-		System.out.println("Hello");
-		ChartInput ci = new ChartInput();
-		String[] dimension = { "team" };
-		ci.setDimensions(dimension);
-		String[] measures = { "champions", "league" };
-		ci.setMeasures(measures);
-		return ci;
+	public ResponseEntity<Chart> getChart(@Validated @RequestBody ChartInput chartInput) {
+		Chart chart = chartService.getChart(chartInput.getDimensions()[0],chartInput.getMeasures());
+		return ResponseEntity.ok(chart);
 	}
 }

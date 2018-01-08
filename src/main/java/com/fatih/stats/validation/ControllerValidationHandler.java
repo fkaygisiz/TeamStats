@@ -1,4 +1,4 @@
-package com.fatih.stats.configuration;
+package com.fatih.stats.validation;
 
 import java.util.Locale;
 
