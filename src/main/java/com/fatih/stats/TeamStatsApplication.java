@@ -20,7 +20,7 @@ public class TeamStatsApplication {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(20);
 		executor.setMaxPoolSize(40);
-		executor.setQueueCapacity(1500);
+		executor.setQueueCapacity(20000);
 		executor.setThreadNamePrefix("TeamStats-");
 		executor.initialize();
 		return executor;

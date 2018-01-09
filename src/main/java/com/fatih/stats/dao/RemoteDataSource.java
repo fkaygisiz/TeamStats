@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataSource {
+public class RemoteDataSource {
 
 	private static final String MILAN = "Milan";
 	private static final String LIVERPOOL = "Liverpool";

@@ -1,8 +1,8 @@
 package com.fatih.stats.service;
 
-import static com.fatih.stats.util.StatUtils.SECOND_FORMAT;
-import static com.fatih.stats.util.StatUtils.getCurrentDateTimeFormat;
+import static com.fatih.stats.util.StatUtils.getFormattedDateTime;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,18 +11,23 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fatih.stats.dao.DataSource;
+import com.fatih.stats.dao.RemoteDataSource;
+import com.fatih.stats.dao.StatisticsDAO;
 import com.fatih.stats.model.Chart;
 import com.fatih.stats.model.NameDataPair;
+import com.fatih.stats.validation.TimeUnit;
 
 @Service
 public class ChartService {
 
 	@Autowired
-	private DataSource dataSource;
+	private RemoteDataSource remoteDataSource;
 
 	@Autowired
 	private AsyncService asyncService;
+	
+	@Autowired
+	private StatisticsDAO chartDAO;
 
 	/**
 	 * 
@@ -38,7 +43,7 @@ public class ChartService {
 	 * @return
 	 */
 	public Chart getChart(String dimension, String[] measures) {
-		String formattedTimeInSecond = getCurrentDateTimeFormat(SECOND_FORMAT);
+		String formattedTimeInSecond = getFormattedDateTime(LocalDateTime.now(), TimeUnit.SECONDS.getFormat());
 		asyncService.increseRequestCount(formattedTimeInSecond);
 		Set<String> categories = new HashSet<>();
 		HashMap<String, Map<String, Integer>> measureValueMap = new HashMap<>();
@@ -61,7 +66,7 @@ public class ChartService {
 	private void fillCategoriesAndValuesMap(String[] measures, Set<String> categories,
 			HashMap<String, Map<String, Integer>> measureValueMap, String formattedTimeInSecond) {
 		for (String measure : measures) {
-			Map<String, Integer> dataMap = dataSource.getData(measure);
+			Map<String, Integer> dataMap = remoteDataSource.getData(measure);
 			increaseQueryCount(formattedTimeInSecond);
 			measureValueMap.put(measure, dataMap);
 			categories.addAll(dataMap.keySet());
@@ -81,6 +86,10 @@ public class ChartService {
 			ndp.getData().add(value != null ? value.doubleValue() : null);
 		}
 		return ndp;
+	}
+
+	public void writeStats() {
+		chartDAO.writeStats();
 	}
 
 }

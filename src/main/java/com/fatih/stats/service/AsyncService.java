@@ -1,32 +1,32 @@
 package com.fatih.stats.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import static com.fatih.stats.util.StatUtils.convertStringToMinuteFormat;
+
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.fatih.stats.dao.ChartDAO;
+import com.fatih.stats.dao.StatisticsDAO;
 
 @Service
 public class AsyncService {
 	
 	@Autowired
-	private ChartDAO chartDAO;
+	private StatisticsDAO statisticsDAO;
 	
 	
 	@Async("processExecutor")
 	public void increseRequestCount(String formattedTimeInSecond) {
-//		chartService.
+		statisticsDAO.increaseRequestCountInSeconds(formattedTimeInSecond);
+		statisticsDAO.increaseRequestCountInMinutes(convertStringToMinuteFormat(formattedTimeInSecond));
 	}
 
 	@Async("processExecutor")
 	public void increaseQueryCount(String formattedTimeInSecond) {
-		// TODO Auto-generated method stub
-		
+		statisticsDAO.increaseQueryCountInSeconds(formattedTimeInSecond);
+		statisticsDAO.increaseQueryCountInMinutes(convertStringToMinuteFormat(formattedTimeInSecond));
 	}
 	
 	public static void main(String[] args) {

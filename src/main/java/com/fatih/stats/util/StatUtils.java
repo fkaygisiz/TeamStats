@@ -3,23 +3,26 @@ package com.fatih.stats.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.fatih.stats.validation.TimeUnit;
+
 public class StatUtils {
 
 	private StatUtils() {
-	    throw new IllegalStateException("Utility class");
-	  }
-	
-	public static final String SECOND_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	public static final String MINUTE_FORMAT = "yyyy-MM-dd HH:mm";
-	
-	public static String getCurrentDateTimeFormat(String format) {
-		LocalDateTime  date = LocalDateTime.now();
+		throw new IllegalStateException("Utility class");
+	}
+
+	public static String getFormattedDateTime(LocalDateTime date, String format) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		return date.format(formatter);
 	}
-	public static void main(String[] args) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SECOND_FORMAT);
-		LocalDateTime parse = LocalDateTime.parse("2017-05-05 10:33:23",formatter);
-		System.out.println(parse);
+
+	public static String convertStringToMinuteFormat(String formattedTimeInSecond) {
+		return formattedTimeInSecond.substring(0, TimeUnit.MINUTES.getFormat().length());
 	}
+	/*
+	 * public static void main(String[] args) { DateTimeFormatter formatter =
+	 * DateTimeFormatter.ofPattern(SECOND_FORMAT); LocalDateTime parse =
+	 * LocalDateTime.parse("2017-05-05 10:33:23",formatter);
+	 * System.out.println(parse); }
+	 */
 }
