@@ -16,7 +16,7 @@ import com.fatih.stats.validation.TimeUnit;
 
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN')")
-@RequestMapping("/statistic")
+@RequestMapping("/statistics")
 public class StatisticsController {
 
 	@Autowired

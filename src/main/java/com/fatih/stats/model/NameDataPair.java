@@ -3,10 +3,10 @@ package com.fatih.stats.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NameDataPair {
+public class NameDataPair<T> {
 
 	private String name;
-	private List<Double> data = new ArrayList<>();
+	private List<T> data = new ArrayList<>();
 
 	public String getName() {
 		return name;
@@ -16,11 +16,11 @@ public class NameDataPair {
 		this.name = name;
 	}
 
-	public List<Double> getData() {
+	public List<T> getData() {
 		return data;
 	}
 
-	public void setData(List<Double> data) {
+	public void setData(List<T> data) {
 		this.data = data;
 	}
 }

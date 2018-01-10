@@ -6,6 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Repository;
 
+import com.fatih.stats.validation.TimeUnit;
+
 @Repository
 public class StatisticsDAO {
 
@@ -31,28 +33,24 @@ public class StatisticsDAO {
 		}
 	}
 
-	public void writeStats() {
-		System.out.println(
-				"queryCountInSeconds: " + queryCountInSeconds.values().stream().mapToInt(AtomicInteger::get).sum());
-		System.out.println(
-				"queryCountInMinutes: " + queryCountInMinutes.values().stream().mapToInt(AtomicInteger::get).sum());
-		System.out.println(
-				"requestCountInSeconds: " + requestCountInSeconds.values().stream().mapToInt(AtomicInteger::get).sum());
-		System.out.println(
-				"requestCountInMinutes: " + requestCountInMinutes.values().stream().mapToInt(AtomicInteger::get).sum());
-		System.out.println("queryCountInSeconds :");
-		queryCountInSeconds.keySet().stream().forEach(System.out::println);
-
-		System.out.println("queryCountInMinutes :");
-		queryCountInMinutes.keySet().stream().forEach(System.out::println);
-	}
-
 	public void increaseRequestCountInSeconds(String formattedTimeInSecond) {
 		increaseCountsByTime(requestCountInSeconds, formattedTimeInSecond);
 	}
 
 	public void increaseRequestCountInMinutes(String formattedTimeInSecond) {
 		increaseCountsByTime(requestCountInMinutes, formattedTimeInSecond);
+	}
+
+	public AtomicInteger getRequestCount(TimeUnit timeUnit, String formattedDateTime) {
+		 return getCountFromMap ((timeUnit == TimeUnit.MINUTES) ? requestCountInMinutes: requestCountInSeconds, formattedDateTime);
+	}
+
+	private AtomicInteger getCountFromMap(Map<String, AtomicInteger> map, String formattedDateTime) {
+		return map.getOrDefault(formattedDateTime, new AtomicInteger());
+	}
+
+	public AtomicInteger getQueryCount(TimeUnit timeUnit, String formattedDateTime) {
+		 return getCountFromMap ((timeUnit == TimeUnit.MINUTES) ? queryCountInMinutes: queryCountInSeconds, formattedDateTime);
 	}
 
 }

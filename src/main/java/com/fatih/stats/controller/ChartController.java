@@ -21,16 +21,10 @@ public class ChartController {
 	private ChartService chartService;
 
 	@PreAuthorize("hasRole('ROLE_USER')")
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Chart> getChart(@Validated @RequestBody ChartInput chartInput) {
 		Chart chart = chartService.getChart(chartInput.getDimensions()[0], chartInput.getMeasures());
 		return ResponseEntity.ok(chart);
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping("stats")
-	public ResponseEntity<String> getStat() {
-		chartService.writeStats();
-		return ResponseEntity.ok("");
-	}
 }

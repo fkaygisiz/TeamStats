@@ -3,16 +3,15 @@ package com.fatih.stats.service;
 import static com.fatih.stats.util.StatUtils.getFormattedDateTime;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fatih.stats.dao.RemoteDataSource;
-import com.fatih.stats.dao.StatisticsDAO;
 import com.fatih.stats.model.Chart;
 import com.fatih.stats.model.NameDataPair;
 import com.fatih.stats.validation.TimeUnit;
@@ -25,9 +24,6 @@ public class ChartService {
 
 	@Autowired
 	private AsyncService asyncService;
-	
-	@Autowired
-	private StatisticsDAO chartDAO;
 
 	/**
 	 * 
@@ -45,7 +41,7 @@ public class ChartService {
 	public Chart getChart(String dimension, String[] measures) {
 		String formattedTimeInSecond = getFormattedDateTime(LocalDateTime.now(), TimeUnit.SECONDS.getFormat());
 		asyncService.increseRequestCount(formattedTimeInSecond);
-		Set<String> categories = new HashSet<>();
+		List<String> categories = new ArrayList<>();
 		HashMap<String, Map<String, Integer>> measureValueMap = new HashMap<>();
 		fillCategoriesAndValuesMap(measures, categories, measureValueMap, formattedTimeInSecond);
 		Chart chart = new Chart();
@@ -57,13 +53,13 @@ public class ChartService {
 	private void fillChartSeries(Chart chart, HashMap<String, Map<String, Integer>> measureValueMap) {
 		for (Map.Entry<String, Map<String, Integer>> entry : measureValueMap.entrySet()) {
 			Map<String, Integer> dataMap = entry.getValue();
-			NameDataPair ndp = createNameDataPair(chart.getCategories(), entry.getKey(), dataMap);
+			NameDataPair<Integer> ndp = createNameDataPair(chart.getCategories(), entry.getKey(), dataMap);
 			chart.getSeries().add(ndp);
 
 		}
 	}
 
-	private void fillCategoriesAndValuesMap(String[] measures, Set<String> categories,
+	private void fillCategoriesAndValuesMap(String[] measures, List<String> categories,
 			HashMap<String, Map<String, Integer>> measureValueMap, String formattedTimeInSecond) {
 		for (String measure : measures) {
 			Map<String, Integer> dataMap = remoteDataSource.getData(measure);
@@ -77,19 +73,15 @@ public class ChartService {
 		asyncService.increaseQueryCount(formattedTimeInSecond);
 	}
 
-	private NameDataPair createNameDataPair(Set<String> categories, String measurementName,
+	private NameDataPair<Integer> createNameDataPair(List<String> categories, String measurementName,
 			Map<String, Integer> dataMap) {
-		NameDataPair ndp = new NameDataPair();
+		NameDataPair<Integer> ndp = new NameDataPair<>();
 		ndp.setName(measurementName);
 		for (String categorie : categories) {
 			Integer value = dataMap.get(categorie);
-			ndp.getData().add(value != null ? value.doubleValue() : null);
+			ndp.getData().add(value != null ? value : null);
 		}
 		return ndp;
-	}
-
-	public void writeStats() {
-		chartDAO.writeStats();
 	}
 
 }
