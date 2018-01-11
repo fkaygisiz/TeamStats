@@ -1,0 +1,7 @@
+query:
+C:\Users\fatih>curl -i -XGET --user admin:password localhost:8080/statistics -H 
+"Content-Type: application/json" -d "{"""last""": 5,"""timeUnit""": """seconds""", """mavgPoints""": 3}"
+
+
+curl -i -XGET --user user:password localhost:8080/chart -H 
+"Content-Type: application/json" -d "{"""dimensions""":["""team"""],"""measures""":["""champions""","""leagues"""]}"
