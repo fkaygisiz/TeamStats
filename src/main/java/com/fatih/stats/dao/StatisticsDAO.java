@@ -42,7 +42,8 @@ public class StatisticsDAO {
 	}
 
 	public AtomicInteger getRequestCount(TimeUnit timeUnit, String formattedDateTime) {
-		 return getCountFromMap ((timeUnit == TimeUnit.MINUTES) ? requestCountInMinutes: requestCountInSeconds, formattedDateTime);
+		return getCountFromMap((timeUnit == TimeUnit.MINUTES) ? requestCountInMinutes : requestCountInSeconds,
+				formattedDateTime);
 	}
 
 	private AtomicInteger getCountFromMap(Map<String, AtomicInteger> map, String formattedDateTime) {
@@ -50,7 +51,8 @@ public class StatisticsDAO {
 	}
 
 	public AtomicInteger getQueryCount(TimeUnit timeUnit, String formattedDateTime) {
-		 return getCountFromMap ((timeUnit == TimeUnit.MINUTES) ? queryCountInMinutes: queryCountInSeconds, formattedDateTime);
+		return getCountFromMap((timeUnit == TimeUnit.MINUTES) ? queryCountInMinutes : queryCountInSeconds,
+				formattedDateTime);
 	}
 
 }

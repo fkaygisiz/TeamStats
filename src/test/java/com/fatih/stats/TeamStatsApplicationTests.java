@@ -16,7 +16,7 @@ public class TeamStatsApplicationTests {
 
 	@Autowired
 	private ChartController chartController;
-	
+
 	@Test
 	public void contextLoads() {
 		assertNotNull(chartController);

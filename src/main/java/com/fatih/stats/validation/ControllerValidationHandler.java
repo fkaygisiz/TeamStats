@@ -19,26 +19,26 @@ import com.fatih.stats.model.MessageDTO.MessageType;
 
 @ControllerAdvice
 public class ControllerValidationHandler {
-  @Autowired
-  private MessageSource msgSource;
+	@Autowired
+	private MessageSource msgSource;
 
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ResponseBody
-  public MessageDTO processValidationError(MethodArgumentNotValidException ex) {
-    BindingResult result = ex.getBindingResult();
-    FieldError error = result.getFieldError();
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public MessageDTO processValidationError(MethodArgumentNotValidException ex) {
+		BindingResult result = ex.getBindingResult();
+		FieldError error = result.getFieldError();
 
-    return processFieldError(error);
-  }
+		return processFieldError(error);
+	}
 
-  private MessageDTO processFieldError(FieldError error) {
-    MessageDTO message = null;
-    if (error != null) {
-      Locale currentLocale = LocaleContextHolder.getLocale();
-      String msg = msgSource.getMessage(error.getDefaultMessage(), null, currentLocale);
-      message = new MessageDTO(MessageType.ERROR, msg);
-    }
-    return message;
-  }
+	private MessageDTO processFieldError(FieldError error) {
+		MessageDTO message = null;
+		if (error != null) {
+			Locale currentLocale = LocaleContextHolder.getLocale();
+			String msg = msgSource.getMessage(error.getDefaultMessage(), null, currentLocale);
+			message = new MessageDTO(MessageType.ERROR, msg);
+		}
+		return message;
+	}
 }

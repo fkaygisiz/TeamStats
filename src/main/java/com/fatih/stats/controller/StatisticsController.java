@@ -1,5 +1,7 @@
 package com.fatih.stats.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,9 +24,11 @@ public class StatisticsController {
 	@Autowired
 	private StatisticsService statisticsService;
 
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Statistics> getChart(@Validated @RequestBody StatisticsInput statisticsInput) {
-		Statistics statistics = statisticsService.getStatistics(statisticsInput.getLast(),TimeUnit.fromValue(statisticsInput.getTimeUnit()), statisticsInput.getMavgPoints());
+		LocalDateTime date = LocalDateTime.now();
+		Statistics statistics = statisticsService.getStatistics(statisticsInput.getLast(),
+				TimeUnit.fromValue(statisticsInput.getTimeUnit()), statisticsInput.getMavgPoints(), date);
 		return ResponseEntity.ok(statistics);
 	}
 

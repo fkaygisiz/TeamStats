@@ -10,11 +10,10 @@ import com.fatih.stats.dao.StatisticsDAO;
 
 @Service
 public class AsyncService {
-	
+
 	@Autowired
 	private StatisticsDAO statisticsDAO;
-	
-	
+
 	@Async("processExecutor")
 	public void increseRequestCount(String formattedTimeInSecond) {
 		statisticsDAO.increaseRequestCountInSeconds(formattedTimeInSecond);
@@ -26,5 +25,5 @@ public class AsyncService {
 		statisticsDAO.increaseQueryCountInSeconds(formattedTimeInSecond);
 		statisticsDAO.increaseQueryCountInMinutes(convertStringToMinuteFormat(formattedTimeInSecond));
 	}
-	
+
 }

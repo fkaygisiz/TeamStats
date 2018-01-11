@@ -1,6 +1,5 @@
 package com.fatih.stats.model;
 
-
 public class MessageDTO {
 	private String message;
 	private MessageType type;
@@ -30,8 +29,8 @@ public class MessageDTO {
 	public void setType(MessageType type) {
 		this.type = type;
 	}
-	
+
 	public enum MessageType {
-		  SUCCESS, INFO, WARNING, ERROR
-		}
+		SUCCESS, INFO, WARNING, ERROR
+	}
 }

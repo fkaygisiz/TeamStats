@@ -1,5 +1,9 @@
 package com.fatih.stats.controller;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fatih.stats.model.Chart;
 import com.fatih.stats.model.ChartInput;
 import com.fatih.stats.service.ChartService;
+import com.fatih.stats.validation.Measures;
 
 @RestController
 @RequestMapping("/chart")
@@ -23,7 +28,8 @@ public class ChartController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Chart> getChart(@Validated @RequestBody ChartInput chartInput) {
-		Chart chart = chartService.getChart(chartInput.getDimensions()[0], chartInput.getMeasures());
+		List<Measures> measures = Arrays.asList(chartInput.getMeasures()).stream().map(e->Measures.valueOf(e.toUpperCase())).collect(Collectors.toList());
+		Chart chart = chartService.getChart(chartInput.getDimensions()[0], measures);
 		return ResponseEntity.ok(chart);
 	}
 

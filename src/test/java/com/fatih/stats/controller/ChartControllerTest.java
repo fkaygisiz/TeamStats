@@ -32,11 +32,11 @@ public class ChartControllerTest {
 	}
 
 	@Test
-	public void shouldGetCorrectResposneFromGetChart() throws Exception {
+	public void shouldGetNoErrorFromGetChart() throws Exception {
 		ChartInput ci = new ChartInput();
 		String[] dimension = { "team" };
 		ci.setDimensions(dimension);
-		String[] measures = { "champions", "leagues" };
+		String[] measures = { "champions", "leagues", "revenue" };
 		ci.setMeasures(measures);
 		ObjectMapper om = new ObjectMapper();
 		String writeValueAsString = om.writeValueAsString(ci);

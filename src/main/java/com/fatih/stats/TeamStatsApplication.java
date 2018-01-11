@@ -15,7 +15,7 @@ public class TeamStatsApplication {
 		SpringApplication.run(TeamStatsApplication.class, args);
 	}
 
-	@Bean(name="processExecutor")
+	@Bean(name = "processExecutor")
 	public TaskExecutor asyncExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(20);
